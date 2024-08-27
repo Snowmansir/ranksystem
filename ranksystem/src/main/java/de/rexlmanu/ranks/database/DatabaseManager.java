@@ -46,7 +46,10 @@ public class DatabaseManager {
     try {
       TableUtils.createTableIfNotExists(this.connectionSource, UserEntity.class);
       TableUtils.createTableIfNotExists(this.connectionSource, ActivityProgressEntity.class);
+    } catch (SQLException ignored) {
+    }
 
+    try {
       this.userDao = DaoManager.createDao(this.connectionSource, UserEntity.class);
       this.activityProgressDao =
           DaoManager.createDao(this.connectionSource, ActivityProgressEntity.class);

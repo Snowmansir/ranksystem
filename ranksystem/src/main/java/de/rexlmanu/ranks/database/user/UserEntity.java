@@ -28,7 +28,7 @@ public class UserEntity {
   @DatabaseField(canBeNull = false, index = true)
   private UUID playerId;
 
-  @DatabaseField(canBeNull = false, index = true)
+  @DatabaseField(canBeNull = false)
   @Builder.Default
   private long experience = 0;
 

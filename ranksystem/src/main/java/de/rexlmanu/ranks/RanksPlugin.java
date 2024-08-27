@@ -20,6 +20,7 @@ import de.rexlmanu.ranks.user.activity.ActivityTrackerListener;
 import java.util.Arrays;
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -55,7 +56,11 @@ public class RanksPlugin extends JavaPlugin {
     this.databaseManager.open();
     this.commandContainer.withCommands(RankAdminCommand.class, PointsCommand.class);
 
-    this.registerListeners(LevelUpHandler.class, ActivityTrackerListener.class, UserManager.class, ExecuteCommandsForLevelupListener.class);
+    this.registerListeners(
+        LevelUpHandler.class,
+        ActivityTrackerListener.class,
+        UserManager.class,
+        ExecuteCommandsForLevelupListener.class);
 
     Bukkit.getScheduler()
         .runTaskTimer(this, this.injector.getInstance(ActivityTimePlayedTask.class), 0, 20 * 60L);
@@ -65,6 +70,8 @@ public class RanksPlugin extends JavaPlugin {
     }
 
     this.userManager.loadAll();
+
+    new Metrics(this, 23195);
   }
 
   @Override

@@ -13,6 +13,7 @@ import org.incendo.cloud.annotations.AnnotationParser;
 import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.injection.GuiceInjectionService;
+import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.incendo.cloud.paper.PaperCommandManager;
 
 public class CloudCommandModule extends AbstractModule {
@@ -21,8 +22,8 @@ public class CloudCommandModule extends AbstractModule {
   public CommandManager<CommandSender> provideCommandManager(
       JavaPlugin javaPlugin, Injector injector) {
 
-    PaperCommandManager<CommandSender> commandManager =
-        new PaperCommandManager<>(
+    LegacyPaperCommandManager<CommandSender> commandManager =
+        new LegacyPaperCommandManager<>(
             javaPlugin, ExecutionCoordinator.asyncCoordinator(), SenderMapper.identity());
 
     if (commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
@@ -30,8 +31,6 @@ public class CloudCommandModule extends AbstractModule {
     } else if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
       commandManager.registerAsynchronousCompletions();
     }
-
-
 
     commandManager
         .parameterInjectorRegistry()

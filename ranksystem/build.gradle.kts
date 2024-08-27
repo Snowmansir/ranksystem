@@ -24,6 +24,7 @@ dependencies {
     library(libs.guice)
     library(libs.configlib)
     library(libs.bundles.cloud)
+    library(libs.bstats)
     implementation(libs.bundles.ormlite)
     implementation(libs.invui)
 

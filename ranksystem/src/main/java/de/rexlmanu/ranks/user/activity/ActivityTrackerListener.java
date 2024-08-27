@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.rexlmanu.ranks.database.activityprogress.Activity;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -66,10 +67,24 @@ public class ActivityTrackerListener implements Listener {
 
   @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
   public void onPlayerMove(PlayerMoveEvent event) {
-    double distance = event.getFrom().distance(event.getTo());
+    Player player = event.getPlayer();
+    if (player.isFlying() || player.isGliding() || player.isSwimming() || player.isRiptiding() || player.isInWater()) {
+      return;
+    }
+
+    // check if player is riding a vehicle
+    if (player.getVehicle() != null) {
+      return;
+    }
+
+    // only take x and z into account (ignore y-axis movement)
+    Location from = event.getFrom();
+    Location to = event.getTo();
+    double distance =
+        Math.sqrt(Math.pow(to.getX() - from.getX(), 2) + Math.pow(to.getZ() - from.getZ(), 2));
 
     long meters = (long) (distance * 100D);
 
-    this.activityService.addProgress(event.getPlayer(), Activity.WALKED_METERS, meters);
+    this.activityService.addProgress(player, Activity.WALKED_METERS, meters);
   }
 }
