@@ -1,0 +1,48 @@
+[versions]
+# Libraries
+paper = "1.20.4-R0.1-SNAPSHOT"
+guice = "7.0.0"
+cloud-paper = "2.0.0-SNAPSHOT"
+cloud-annotations = "2.1.0-SNAPSHOT"
+configlib = "4.5.0"
+ormlite = "7.0-SNAPSHOT"
+invui = "1.36.1"
+placeholderapi = "2.11.6"
+
+# Plugins
+runpaper = "2.3.1"
+shadow = "8.3.0"
+lombok = "8.10"
+paperyml = "0.6.0"
+minecraftserver = "3.1.0"
+
+[libraries]
+paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" }
+cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud-annotations" }
+guice = { module = "com.google.inject:guice", version.ref = "guice" }
+configlib = { module = "de.exlll:configlib-paper", version.ref = "configlib" }
+ormlite-core = { module = "com.j256.ormlite:ormlite-core", version.ref = "ormlite" }
+ormlite-jdbc = { module = "com.j256.ormlite:ormlite-jdbc", version.ref = "ormlite" }
+invui = { module = "xyz.xenondevs.invui:invui", version.ref = "invui" }
+placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
+bstats = { module = "org.bstats:bstats-bukkit", version = "3.0.2" }
+
+[plugins]
+runpaper = { id = "xyz.jpenilla.run-paper", version.ref = "runpaper" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+lombok = { id = "io.freefair.lombok", version.ref = "lombok" }
+paperyml = { id = "net.minecrell.plugin-yml.paper", version.ref = "paperyml" }
+minecraftserver = { id = "dev.s7a.gradle.minecraft.server", version.ref = "minecraftserver" }
+
+[bundles]
+
+cloud = [
+    "cloud-paper",
+    "cloud-annotations"
+]
+
+ormlite = [
+    "ormlite-core",
+    "ormlite-jdbc"
+]
