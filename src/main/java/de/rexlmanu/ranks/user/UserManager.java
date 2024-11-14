@@ -5,9 +5,10 @@ import com.google.inject.Singleton;
 import de.rexlmanu.ranks.database.DatabaseManager;
 import de.rexlmanu.ranks.database.user.UserEntity;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.Server;
@@ -21,8 +22,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class UserManager implements Listener {
   private final Server server;
-  private final DatabaseManager databaseManager;
-  private final Map<UUID, UserEntity> cachedUsers = new HashMap<>();
+  @Getter private final DatabaseManager databaseManager;
+  private final Map<UUID, UserEntity> cachedUsers = new ConcurrentHashMap<>();
 
   @SneakyThrows
   @EventHandler
@@ -53,7 +54,12 @@ public class UserManager implements Listener {
   @EventHandler
   public void handleQuit(PlayerQuitEvent event) {
     Player player = event.getPlayer();
+    this.unloadUser(player);
+  }
+
+  private void unloadUser(Player player) throws SQLException {
     this.saveUser(player);
+    this.cachedUsers.remove(player.getUniqueId());
   }
 
   private void saveUser(Player player) throws SQLException {
@@ -61,7 +67,6 @@ public class UserManager implements Listener {
     if (user == null) return;
     this.databaseManager.userDao().update(user);
     user.activityProgresses().updateAll();
-    this.cachedUsers.remove(player.getUniqueId());
   }
 
   public UserEntity getUser(Player player) {
@@ -72,6 +77,16 @@ public class UserManager implements Listener {
     for (Player onlinePlayer : this.server.getOnlinePlayers()) {
       try {
         this.loadUser(onlinePlayer);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  public void unloadAll() {
+    for (Player onlinePlayer : this.server.getOnlinePlayers()) {
+      try {
+        this.unloadUser(onlinePlayer);
       } catch (SQLException e) {
         e.printStackTrace();
       }

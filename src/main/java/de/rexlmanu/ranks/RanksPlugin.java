@@ -72,6 +72,9 @@ public class RanksPlugin extends JavaPlugin {
     this.userManager.loadAll();
 
     new Metrics(this, 23195);
+
+    // auto save all users every minute
+    this.getServer().getScheduler().runTaskTimerAsynchronously(this, () -> this.userManager.saveAll(), 20, 20 * 60);
   }
 
   @Override
@@ -80,7 +83,7 @@ public class RanksPlugin extends JavaPlugin {
     if (this.injector == null) {
       return;
     }
-    this.userManager.saveAll();
+    this.userManager.unloadAll();
     this.databaseManager.close();
   }
 

@@ -24,7 +24,7 @@ dependencies {
     library(libs.guice)
     library(libs.configlib)
     library(libs.bundles.cloud)
-    library(libs.bstats)
+    implementation(libs.bstats)
     implementation(libs.bundles.ormlite)
     implementation(libs.invui)
 
@@ -50,6 +50,7 @@ tasks {
         reloc("xyz.xenondevs.invui", "invui")
         reloc("xyz.xenondevs.inventoryaccess", "inventoryaccess")
         reloc("com.j256.ormlite", "ormlite")
+        reloc("org.bstats", "bstats")
 
         dependencies {
             exclude("META-INF/NOTICE")
